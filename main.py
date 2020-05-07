@@ -4,14 +4,15 @@ TOKEN = "BOT_TOKEN"
 client = discord.Client()
 
 
-def func_name():
-    # description of first func
-    pass
+help_text = ''''''
 
 
-def func_name_2():
-    # description of second func
-    pass
+def help_command(message):
+    message.channel.send(help_text)
+
+
+def choose_game_command(message):
+    message.channel.send('Напишите название игры')
 
 
 def func_name_3():
@@ -20,10 +21,11 @@ def func_name_3():
 
 
 # creating global collections used for messages parsing
-KEYWORDS = ['1', '2', '3']
-KEYWORD_COMMANDS = {'1': func_name,
-                    '2': func_name_2,
-                    '3': func_name_3}
+KEYWORD_COMMANDS = {'помощь': help_command,
+                    'help': help_command,
+                    'справка': help_command,
+                    'game': choose_game_command,
+                    'игра': choose_game_command}
 
 
 # boot function
@@ -39,13 +41,13 @@ async def on_ready():
 # messages parsing
 @client.event
 async def on_message(message):
-    global KEYWORDS, KEYWORD_COMMANDS
+    global KEYWORD_COMMANDS
     if message.author == client.user:
         return
-    for word in KEYWORDS:
+    for word in KEYWORD_COMMANDS.keys():
         if word in message.content.lower():
             temp_func_name = KEYWORD_COMMANDS[word]
-            temp_func_name()
+            temp_func_name(message)
 
 
 # launching
